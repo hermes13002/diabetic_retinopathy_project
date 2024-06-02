@@ -1,1 +1,3 @@
-# diabetic_retinopathy_project
+# Diabetic Retinopathy Project <br>
+
+## Overview 
