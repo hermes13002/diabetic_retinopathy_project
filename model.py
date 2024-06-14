@@ -1,3 +1,4 @@
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 import numpy as np
 from PIL import Image
@@ -24,6 +25,9 @@ def load_image(image_path):
     return image_tensor
 
 
+
+
+
 def predict_image(model, image_path):
     
     
@@ -34,8 +38,8 @@ def predict_image(model, image_path):
     probability_prediction = model.predict(image_tensor)
 
     # Round up probabilities
-    prediction = np.round(probability_prediction)
-    print(prediction, probability_prediction)
+    prediction = np.round(probability_prediction,)
+
     
     return prediction, probability_prediction
 

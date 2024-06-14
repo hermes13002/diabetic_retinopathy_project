@@ -1,4 +1,6 @@
+import os 
 import numpy as np
+import pandas as pd
 from PIL import Image
 import streamlit as st
 import tensorflow as tf
@@ -49,12 +51,12 @@ st.markdown(
 
 st.markdown("<h1 class='title-text'>Animal Classifier Model</h1>", unsafe_allow_html=True)
 st.markdown(
-    """<p class='description-text'>This model is trained on images featuring four different types of animals: Elephant, Lion, Giraffe, and Zebra. 
-    It utilizes Convolutional Neural Networks (CNN) to perform classification, achieving high accuracy and robust performance metrics. This 
-    project showcases machines' remarkable capability to discern intricate patterns imperceptible to humans. Not only does this image classification 
-    project underscore machines' capacity to analyze images, but it also serves as a demonstration of machine learning's capabilities in image 
-    classification. It provides a practical example of how machine learning can address real-world problems, fostering innovation and efficiency 
-    across diverse fields.</p>""",
+    """<p class='description-text'>The existing methods for detecting and grading Diabetic Retinopathy (DR) often rely on subjective assessments and extensive manual labor, leading to 
+    inefficiencies and potential inconsistencies in diagnosis. The increasing prevalence of diabetes and the limited availability of ophthalmologists further exacerbate the challenges in 
+    timely screening and diagnosis. Therefore, there is a need to develop a robust and reliable automated system that can accurately detect and grade diabetic retinopathy, enabling early 
+    intervention and personalized treatment plans. This project aims to address this challenges by leveraging machine learning and computer vision techniques. The proposed system will take 
+    fundus images of the retina as input and automatically detect the presence of diabetic retinopathy. The system will also grade the severity of the condition, providing clinicians with 
+    valuable information for treatment planning.</p>""",
     unsafe_allow_html=True
 )
 
@@ -71,27 +73,44 @@ if uploaded_image is not None:
             st.image(image, caption="Uploaded Image")
             
             # Save the uploaded image to the working directory.
-            image_path = os.path.join("animal_image_classifier_project", "uploaded_image.jpg")
+            image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
             image.save(image_path)
             
-            # Get the trained model file.
-            model_file = "animal_image_classifier_project/animal_classifier.pt"
-
-            classes = ["elephant", "giraffe", "lion", "zebra"]
-
+            # The classes to be predicted.
+            classes = ["Presence of Diabetic Retinopathy [DR]", "Absence of Diabetic Retinopathy [NO-DR]"]
+            
             # Load the model.
-            classifier_model = AnimalNet(num_classes=len(classes))
-            classifier_model.load_state_dict(torch.load(model_file))
-            
-            
+            model = load_model("model-folder\diabetic-retino-model.h5")
         
-            # Perform prediction
-            label = predict_image(model=classifier_model, image_path=image_path)
+        
+            # Perform prediction on the patient's image.
+            label, confidence_level = predict_image(model=model, image_path=image_path)
             
-            # Display predicted class and confidence score
-            st.write("Predicted Class:", classes[label].title())
-            # st.write("Confidence Score:", label["confidence"])
+            # Define the binary class.
+            binary_class = ["DR", "NO-DR"]
             
+            if confidence_level >= 0.5:
+                
+                # Display predicted class and confidence score.
+                st.write("This patient is likely to be:", classes[label])
+                st.write(f"Model's Confidence Score: {round(confidence_level, 4) * 100}%")
+            
+                
+            
+            else: 
+                
+                # Display predicted class and confidence score.
+                st.write("This patient is likely to be:", classes[label])
+                st.write(f"Model's Confidence Score: {(1 - round(confidence_level, 4) ) * 100}%")
+            
+          
+            # Display bar chart.
+            confidence_scores = [round(1 - confidence_level, 4), round(confidence_level, 4)]
+            
+            st.bar_chart(pd.DataFrame({
+                'Confidence': confidence_scores
+                }, index=binary_class))
+                  
             
             # Delete the model path after making prediction.
             os.remove(image_path)
@@ -115,9 +134,6 @@ st.markdown(
     """, 
     unsafe_allow_html=True
 )
-
-
-
 
 
 
@@ -167,8 +183,10 @@ st.sidebar.markdown(
     <div class="info">
         <h1 class="h1">About</h1>
         <p>
-        This web application is an Animal Classifier project, which aims to classify images of four different types of animals: Elephant, Giraffe,
-        Lion, and Zebra. The project utilizes Convolutional Neural Networks (CNNs) to achieve high accuracy in classification. 
+        This web application aims to develop an automated system for detecting and grading Diabetic Retinopathy (DR) using machine learning and computer vision techniques. Current methods
+        rely on subjective assessments and manual labor, leading to inefficiencies and inconsistencies. By analyzing retinal fundus images, the system will accurately identify the presence
+        and severity of DR, aiding in early intervention and personalized treatment plans. This addresses the growing prevalence of diabetes and the shortage of ophthalmologists, enhancing
+        timely and reliable screening and diagnosis.
         </p>
         <h2 class="header">Purpose</h2>
         <p>
@@ -180,6 +198,8 @@ st.sidebar.markdown(
         <p>
             Osunba Silas Tolani
         </p>
+        
+        
         <h2 class="header">Acknowledgments</h2>
         <p>
             I'd like to thank the Streamlit community for their support 
