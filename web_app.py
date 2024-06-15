@@ -16,7 +16,7 @@ st.markdown(
     """
     <style>
         .title-text {
-            font-size: 50px;
+            font-size: 26px;
             font-weight: bold;
             color: #A52A2A;
             margin-bottom: 20px;
@@ -26,11 +26,12 @@ st.markdown(
             color: #FFE4B5;
             margin-bottom: 30px;
             padding: 15px;
-            background-color: #333333
+            background-color: #333333;
+            border: 1px solid black;
         }
         .stApp {
             background-color: #CCCCCC; 
-            padding: 20px;
+            padding: 10px;
             margin: 15px
         }
         .footer{
@@ -40,7 +41,8 @@ st.markdown(
             position; fixed;
             text-align: center;
             bottom: 0;
-            width: 100%
+            width: 100%;
+            height: 50px;
         }
     </style>
     """,
@@ -49,7 +51,7 @@ st.markdown(
 
 
 
-st.markdown("<h1 class='title-text'>Animal Classifier Model</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='title-text'>Automated Detection and Grading of Diabetic Retinopathy Using Machine Learning</h1>", unsafe_allow_html=True)
 st.markdown(
     """<p class='description-text'>The existing methods for detecting and grading Diabetic Retinopathy (DR) often rely on subjective assessments and extensive manual labor, leading to 
     inefficiencies and potential inconsistencies in diagnosis. The increasing prevalence of diabetes and the limited availability of ophthalmologists further exacerbate the challenges in 
@@ -166,6 +168,7 @@ st.markdown(
             background-color: #D3D3D3;
             color: #000000;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid black;
         }
         .sidebar-close {
             color: #666666; /* Dark Gray */
@@ -174,8 +177,12 @@ st.markdown(
             background-color: #D3D3D3;
             font-size: 12px;
             color: #A52A2A;
-            padding: 20px;
-            margin-top: 20px
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 100px;
+            border: 1px solid black
+            
         }
     </style>
     """,
@@ -189,27 +196,30 @@ st.sidebar.markdown(
     <div class="info">
         <h1 class="h1">About</h1>
         <p>
-        This web application aims to develop an automated system for detecting and grading Diabetic Retinopathy (DR) using machine learning and computer vision techniques. Current methods
-        rely on subjective assessments and manual labor, leading to inefficiencies and inconsistencies. By analyzing retinal fundus images, the system will accurately identify the presence
-        and severity of DR, aiding in early intervention and personalized treatment plans. This addresses the growing prevalence of diabetes and the shortage of ophthalmologists, enhancing
-        timely and reliable screening and diagnosis.
+        This web application automates the detection and grading of Diabetic Retinopathy (DR) using machine learning and computer vision. By analyzing retinal fundus images, it aims to provide
+        accurate, consistent, and efficient identification of DR severity, supporting early intervention and personalized treatment. This addresses the rising diabetes prevalence and 
+        ophthalmologist shortage, enhancing timely and reliable screening and diagnosis.
         </p>
         <h2 class="header">Purpose</h2>
         <p>
-            The purpose of this project is to demonstrate the capabilities of 
-            machine learning in image classification and to provide a practical 
-            example of how machine learning can be applied to real-world problems.
+        The purpose of this project is to demonstrate the capabilities of machine learning in image classification and to provide a practical example of how machine learning can be applied 
+        to real-world problems.
         </p>
-        <h2 class="header">Contributor</h2>
+        <h2 class="header">Contributors</h2>
         <p>
-            Osunba Silas Tolani
+        <a href="https://github.com/TolaniSilas" target="_blank">Osunba Silas Tolani</a>
         </p>
-        
+        <p>
+        <a href="https://github.com/TolaniSilas" target="_blank">Soares Ayoigbala</a>
+        </p>
+        <p>
+        <a href="https://github.com/TolaniSilas" target="_blank">Ogundipe Elijah</a>
+        </p>
+
         
         <h2 class="header">Acknowledgments</h2>
         <p>
-            I'd like to thank the Streamlit community for their support 
-            and the developers of the underlying libraries used in this project.
+        I'd like to thank the Streamlit community for their support and the developers of the underlying libraries used in this project.
         </p>
     </div>
     """,
