@@ -76,6 +76,13 @@ st.markdown("""
 
 
 
+
+# ==================== Spacing ==================== #
+st.markdown("&nbsp;")
+
+
+
+
 # ==================== Styling ==================== #
 
 st.markdown(
@@ -145,6 +152,14 @@ with st.container():
         unsafe_allow_html=True
         )
 
+
+
+
+# ==================== Spacing ==================== #
+st.markdown("&nbsp;")
+st.markdown("&nbsp;")
+st.markdown("&nbsp;")
+st.markdown("&nbsp;")
 
 
 
