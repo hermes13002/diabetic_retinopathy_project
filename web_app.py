@@ -289,7 +289,7 @@ if uploaded_images is not None:
                     st.write("This patient is likely to be", classes[label])
                     
                     # confidence_level = np.round(confidence_level, 4)* 100
-                    score = confidence_level[0][0]
+                    score = confidence_level
                     st.write(f"Model's Confidence Score: {score * 100}%")
             
                 else: 
@@ -299,7 +299,7 @@ if uploaded_images is not None:
                     st.write("This patient is likely to be", classes[label])
                     
                     # confidence_level = (1 - np.round(confidence_level, 4) ) * 100
-                    score = list(confidence_level[0][0])
+                    score = confidence_level
                     st.write(f"Model's Confidence Score: {round(score, 4) * 100}%")
                 
             
