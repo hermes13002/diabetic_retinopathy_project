@@ -176,10 +176,10 @@ st.markdown(
             background-color: #D3D3D3;
             font-size: 12px;
             color: #A52A2A;
-            padding: 15px;
+            padding: 5px;
             margin-top: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 50px;
+            height: 70px;
         
             
         }
