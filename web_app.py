@@ -168,7 +168,6 @@ st.markdown(
             background-color: #D3D3D3;
             color: #000000;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border: 1px solid black;
         }
         .sidebar-close {
             color: #666666; /* Dark Gray */
@@ -180,8 +179,8 @@ st.markdown(
             padding: 15px;
             margin-top: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 100px;
-            border: 1px solid black
+            height: 50px;
+        
             
         }
     </style>
@@ -214,13 +213,9 @@ st.sidebar.markdown(
         </p>
         <p>
         <a href="https://github.com/TolaniSilas" target="_blank">Ogundipe Elijah</a>
-        </p>
-
-        
+        </p>        
         <h2 class="header">Acknowledgments</h2>
-        <p>
-        I'd like to thank the Streamlit community for their support and the developers of the underlying libraries used in this project.
-        </p>
+        <p>I'd like to thank the Streamlit community for their support and the developers of the underlying libraries used in this project.</p>
     </div>
     """,
     unsafe_allow_html=True
