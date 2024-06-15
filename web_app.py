@@ -277,7 +277,7 @@ if uploaded_images is not None:
             
             
                 # Perform prediction on the patient's image.
-                label, confidence_level = predict_image(model=model, image_path=image_path)
+                confidence_level = predict_image(model=model, image_path=image_path)
                 
                 # Define the binary class.
                 binary_class = ["DR", "NO-DR"]
@@ -288,9 +288,9 @@ if uploaded_images is not None:
                     # Display predicted class and confidence score.
                     st.write("This patient is likely to be", classes[label])
                     
-                    # confidence_level = np.round(confidence_level, 4) * 100
+                    # confidence_level = np.round(confidence_level, 4)* 100
                     score = confidence_level[0][0]
-                    st.write(f"Model's Confidence Score: {round(score, 4)}%")
+                    st.write(f"Model's Confidence Score: {score}%")
             
                 else: 
                     
@@ -298,9 +298,9 @@ if uploaded_images is not None:
                     # Display predicted class and confidence score.
                     st.write("This patient is likely to be", classes[label])
                     
-                    confidence_level = (1 - np.round(confidence_level, 4) ) * 100
+                    # confidence_level = (1 - np.round(confidence_level, 4) ) * 100
                     score = confidence_level[0][0]
-                    st.write(f"Model's Confidence Score: {round(score, 4)}%")
+                    st.write(f"Model's Confidence Score: {round(score, 4) * 100}%")
                 
             
                 # # Display bar chart.
