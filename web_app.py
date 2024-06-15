@@ -80,7 +80,7 @@ if uploaded_image is not None:
             classes = ["Presence of Diabetic Retinopathy [DR]", "Absence of Diabetic Retinopathy [NO-DR]"]
             
             # Load the model.
-            model = load_model("model-folder\diabetic-retino-model.h5")
+            model = load_model("model-folder/diabetic-retino-model.h5")
         
         
             # Perform prediction on the patient's image.
