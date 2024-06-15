@@ -37,9 +37,7 @@ def predict_image(model, image_path):
     # Predict the class probabilities
     probability_prediction = model.predict( image_tensor)
 
-    # # Round up probabilities
-    # prediction = np.round(probability_prediction)
-    rounded_probability = [prob for prob in probability_prediction[0][0]]
+    rounded_probability = np.round(probability_prediction, decimals=2)
     
-    return round(rounded_probability, 4) 
+    return rounded_probability
 
