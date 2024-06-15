@@ -39,7 +39,7 @@ def predict_image(model, image_path):
 
     # # Round up probabilities
     # prediction = np.round(probability_prediction)
-
+    rounded_probability = [prob for prob in probability_prediction[0][0]]
     
-    return np.round(probability_prediction, 4)
+    return round(rounded_probability, 4) 
 
