@@ -253,11 +253,12 @@ uploaded_images = st.file_uploader("Upload retinal fundus images for analysis", 
 
 # Display Uploaded Image and Classification Results
 if uploaded_images is not None:
-    if uploaded_images.type in ["image/jpg", "image/jpeg", "image/png"]:
+    
+    # Loop through the uploaded images.
+    for uploaded_image in uploaded_images:
         
-        # Loop through the uploaded images.
-        for uploaded_image in uploaded_images:
-            
+        if uploaded_image.type in ["image/jpg", "image/jpeg", "image/png"]:
+    
             # Display loading spinner
             with st.spinner('Classifying...'):
                 
