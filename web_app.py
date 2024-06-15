@@ -318,8 +318,8 @@ if uploaded_images is not None:
        
             
             
-    else:
-        st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
+        else:
+            st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
 
 
 st.markdown("&nbsp;", unsafe_allow_html=True)
