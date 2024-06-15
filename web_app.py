@@ -41,7 +41,7 @@ st.markdown(
         }
         
         .stApp {
-            background-color: #CCCCCC; 
+            background-color: #FFFFFF; 
             padding: 10px;
             margin: 15px
         }
@@ -68,7 +68,7 @@ st.markdown(
 
 st.markdown("""
             <div class="title-text">
-            <h1>Automated Detection and Grading of Diabetic Retinopathy Using Machine Learning</h1>
+            <h1>Automated Detection of Diabetic Retinopathy</h1>
             </div>
             """, 
             unsafe_allow_html=True
@@ -114,13 +114,11 @@ with st.container():
         st.markdown(
             """
             <div class="about-text">
-                <p> 
-                This web application automates the detection and grading of Diabetic Retinopathy (DR) using machine learning and computer vision. By analyzing retinal fundus images, it 
-                provides accurate, consistent, and efficient identification of DR severity, supporting early intervention and personalized treatment. Existing methods often rely on subjective
-                assessments and extensive manual labor, leading to inefficiencies and inconsistencies. The increasing prevalence of diabetes and the limited availability of ophthalmologists 
-                further exacerbate timely screening and diagnosis challenges. This project addresses these issues by leveraging machine learning and computer vision techniques. The model 
-                underwent fine-tuning using Convolutional Neural Network techniques, achieving an impressive accuracy and a recall score of 96%, indicating its ability to effectively capture 
-                cases of diabetic retinopathy. This enhances timely and reliable screening and diagnosis, addressing the rising diabetes prevalence and ophthalmologist shortage. 
+                <p>
+                This application automates the detection and grading of Diabetic Retinopathy (DR) using machine learning and computer vision. It analyzes retinal fundus images to provide 
+                accurate, consistent, and efficient identification of DR severity, supporting early intervention and personalized treatment. By leveraging these techniques, it addresses 
+                challenges posed by subjective assessments and manual labor in existing methods. The model, fine-tuned using Convolutional Neural Networks, achieves an impressive 96%
+                accuracy and recall score, ensuring effective detection of diabetic retinopathy cases amidst rising diabetes prevalence and ophthalmologist shortages.
                 </p>            
             </div>
             """,
