@@ -158,8 +158,7 @@ with st.container():
 # ==================== Spacing ==================== #
 st.markdown("&nbsp;")
 st.markdown("&nbsp;")
-st.markdown("&nbsp;")
-st.markdown("&nbsp;")
+
 
 
 
@@ -318,7 +317,11 @@ if uploaded_image is not None:
         st.error("Please upload a JPG or JPEG image.", icon="🔴")
 
 
+st.markdown("&nbsp;")
+st.markdown("&nbsp;")
 
+
+st.markdown("<br>")  # Adding a single line break
 
 
 # ----------------------------------Footer----------------------------------------#
