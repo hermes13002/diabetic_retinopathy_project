@@ -249,72 +249,76 @@ with tab2:
 
 
 # File Uploader
-uploaded_image = st.file_uploader("Upload an image:", type=["jpg", "jpeg"])
+uploaded_images = st.file_uploader("Upload retinal fundus images for analysis", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
 
 # Display Uploaded Image and Classification Results
-if uploaded_image is not None:
-    if uploaded_image.type in ["image/jpg", "image/jpeg"]:
+if uploaded_images is not None:
+    if uploaded_images.type in ["image/jpg", "image/jpeg", "image/png"]:
         
-        # Display loading spinner
-        with st.spinner('Classifying...'):
+        # Loop through the uploaded images.
+        for uploaded_image in uploaded_images:
             
-            image = Image.open(uploaded_image)
-            st.image(image, caption="Uploaded Image")
+            # Display loading spinner
+            with st.spinner('Classifying...'):
+                
+                image = Image.open(uploaded_image)
+                st.image(image, caption="Uploaded Image")
             
-            # Save the uploaded image to the working directory.
-            image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
-            image.save(image_path)
+                # Save the uploaded image to the working directory.
+                image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
+                image.save(image_path)
+                
+                # The classes to be predicted.
+                classes = ["Presence of Diabetic Retinopathy [DR]", "Absence of Diabetic Retinopathy [NO-DR]"]
+                
+                # Load the model.
+                model = load_model("model-folder/diabetic-retino-model.h5")
             
-            # The classes to be predicted.
-            classes = ["Presence of Diabetic Retinopathy [DR]", "Absence of Diabetic Retinopathy [NO-DR]"]
             
-            # Load the model.
-            model = load_model("model-folder/diabetic-retino-model.h5")
+                # Perform prediction on the patient's image.
+                label, confidence_level = predict_image(model=model, image_path=image_path)
+                
+                # Define the binary class.
+                binary_class = ["DR", "NO-DR"]
+            
+                if confidence_level >= 0.5:
+                    
+                    label = 1
+                    # Display predicted class and confidence score.
+                    st.write("This patient is likely to be", classes[label])
+                    
+                    # confidence_level = np.round(confidence_level, 4) * 100
+                    score = confidence_level[0][0]
+                    st.write(f"Model's Confidence Score: {round(score, 4)}%")
+            
+                else: 
+                    
+                    label = 0
+                    # Display predicted class and confidence score.
+                    st.write("This patient is likely to be", classes[label])
+                    
+                    confidence_level = (1 - np.round(confidence_level, 4) ) * 100
+                    score = confidence_level[0][0]
+                    st.write(f"Model's Confidence Score: {round(score, 4)}%")
+                
+            
+                # # Display bar chart.
+                # confidence_scores = [np.round(1 - confidence_level, 4), np.round(confidence_level, 4)]
+                
+                # st.bar_chart(pd.DataFrame({
+                #     'Confidence': confidence_scores
+                #     }, index=binary_class))
+                    
+                
+                # Delete the model path after making prediction.
+                os.remove(image_path)
         
         
-            # Perform prediction on the patient's image.
-            label, confidence_level = predict_image(model=model, image_path=image_path)
-            
-            # Define the binary class.
-            binary_class = ["DR", "NO-DR"]
-            
-            if confidence_level >= 0.5:
-                
-                label = 1
-                # Display predicted class and confidence score.
-                st.write("This patient is likely to be", classes[label])
-                
-                confidence_level = np.round(confidence_level, 4) * 100
-                score = confidence_level[0][0]
-                st.write(f"Model's Confidence Score: {round(score, 4)}%")
-            
-                
-            
-            else: 
-                
-                label = 0
-                # Display predicted class and confidence score.
-                st.write("This patient is likely to be", classes[label])
-                
-                confidence_level = (1 - np.round(confidence_level, 4) ) * 100
-                score = confidence_level[0][0]
-                st.write(f"Model's Confidence Score: {round(score, 4)}%")
-            
-          
-            # # Display bar chart.
-            # confidence_scores = [np.round(1 - confidence_level, 4), np.round(confidence_level, 4)]
-            
-            # st.bar_chart(pd.DataFrame({
-            #     'Confidence': confidence_scores
-            #     }, index=binary_class))
-                  
-            
-            # Delete the model path after making prediction.
-            os.remove(image_path)
+       
             
             
     else:
-        st.error("Please upload a JPG or JPEG image.", icon="🔴")
+        st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
 
 
 st.markdown("&nbsp;", unsafe_allow_html=True)
