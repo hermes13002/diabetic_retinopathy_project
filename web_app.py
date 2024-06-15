@@ -94,7 +94,9 @@ if uploaded_image is not None:
                 label = 1
                 # Display predicted class and confidence score.
                 st.write("This patient is likely to be", classes[label])
-                st.write(f"Model's Confidence Score: {np.round(confidence_level, 4) * 100}%")
+                
+                confidence_level = np.round(confidence_level, 4) * 100
+                st.write(f"Model's Confidence Score: {confidence_level[0][0]}%")
             
                 
             
@@ -103,7 +105,9 @@ if uploaded_image is not None:
                 label = 0
                 # Display predicted class and confidence score.
                 st.write("This patient is likely to be", classes[label])
-                st.write(f"Model's Confidence Score: {(1 - np.round(confidence_level, 4) ) * 100}%")
+                
+                confidence_level = (1 - np.round(confidence_level, 4) ) * 100
+                st.write(f"Model's Confidence Score: {confidence_level[0][0]}%")
             
           
             # # Display bar chart.
