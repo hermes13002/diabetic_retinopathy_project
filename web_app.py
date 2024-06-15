@@ -152,36 +152,43 @@ with st.container():
 
 # tab1, tab2 = st.tabs(["🎯 Objectives", "🎯 App Features"])
 
+# Define tabs with emojis
 tab1, tab2 = st.columns(2)
 
 # Objectives tab
 with tab1:
-    
-    with st.expander():
-        st.write("🎯 Objectives")
-        st.write("""
-        <ul>
-            <li>Automate the detection of Diabetic Retinopathy (DR) using machine learning and computer vision.</li>
-            <li>Enhance accuracy in identifying different stages and severity levels of DR from retinal fundus images.</li>
-            <li>Support early intervention by providing timely and reliable screening results.</li>
-            <li>Reduce reliance on subjective assessments and manual labor for DR diagnosis.</li>
-            <li>Address challenges posed by the increasing prevalence of diabetes and the shortage of ophthalmologists.</li>
-            <li>Develop a robust and scalable system for DR detection and grading.</li>
-            <li>Enable personalized treatment plans based on precise DR severity assessments.</li>
-        </ul>
-        """,
-        unsafe_allow_html=True)
+    st.write("🎯 Objectives")
+    with st.expander("Click to see objectives"):
+        st.markdown(
+            """
+            <ul>
+                <li>Automate the detection of Diabetic Retinopathy (DR) using machine learning and computer vision.</li>
+                <li>Enhance accuracy in identifying different stages and severity levels of DR from retinal fundus images.</li>
+                <li>Support early intervention by providing timely and reliable screening results.</li>
+                <li>Reduce reliance on subjective assessments and manual labor for DR diagnosis.</li>
+                <li>Address challenges posed by the increasing prevalence of diabetes and the shortage of ophthalmologists.</li>
+                <li>Develop a robust and scalable system for DR detection and grading.</li>
+                <li>Enable personalized treatment plans based on precise DR severity assessments.</li>
+            </ul>
+            """,
+            unsafe_allow_html=True,
+        )
 
-# Features tab (placeholder)
+# Features tab
 with tab2:
-    
-    with st.expander():
-        st.write("📱 App Features")
-        st.write("Feature details will go here.")
-
-
-
-
+    st.write("📱 App Features")
+    with st.expander("Click to see features"):
+        st.markdown(
+            """
+            <ul>
+                <li>Upload retinal fundus images for DR analysis.</li>
+                <li>Utilize machine learning and computer vision techniques for analysis.</li>
+                <li>Display accurate detection results and severity grading.</li>
+                <li>Provide confidence level in DR detection.</li>
+            </ul>
+            """,
+            unsafe_allow_html=True,
+        )
 
 
 
