@@ -78,7 +78,7 @@ st.markdown("""
 
 
 # ==================== Spacing ==================== #
-st.markdown("&nbsp;")
+st.markdown("&nbsp;", unsafe_allow_html=True)
 
 
 
@@ -317,11 +317,11 @@ if uploaded_image is not None:
         st.error("Please upload a JPG or JPEG image.", icon="🔴")
 
 
-st.markdown("&nbsp;")
-st.markdown("&nbsp;")
+st.markdown("&nbsp;", unsafe_allow_html=True)
+st.markdown("&nbsp;", unsafe_allow_html=True)
 
 
-st.markdown("<br>")  # Adding a single line break
+st.markdown("<br>", unsafe_allow_html=True)  # Adding a single line break
 
 
 # ----------------------------------Footer----------------------------------------#
