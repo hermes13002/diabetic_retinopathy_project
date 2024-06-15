@@ -106,12 +106,12 @@ if uploaded_image is not None:
                 st.write(f"Model's Confidence Score: {(1 - np.round(confidence_level, 4) ) * 100}%")
             
           
-            # Display bar chart.
-            confidence_scores = [np.round(1 - confidence_level, 4), np.round(confidence_level, 4)]
+            # # Display bar chart.
+            # confidence_scores = [np.round(1 - confidence_level, 4), np.round(confidence_level, 4)]
             
-            st.bar_chart(pd.DataFrame({
-                'Confidence': confidence_scores
-                }, index=binary_class))
+            # st.bar_chart(pd.DataFrame({
+            #     'Confidence': confidence_scores
+            #     }, index=binary_class))
                   
             
             # Delete the model path after making prediction.
