@@ -289,11 +289,13 @@ if uploaded_images is not None:
                     
                     score.append(confidence_level[0, 0])
                     confidence_score = round(score[0], 4)
+                    score = confidence_score * 100
+                    st.write(score)
                 
-                    st.write(confidence_score * 100)
+                    st.write(confidence_score)
                     
                     # Display predicted class and confidence score.
-                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score * 100}.")
+                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score }.")
             
                 else: 
                
