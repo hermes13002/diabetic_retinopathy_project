@@ -55,13 +55,26 @@ def init_db():
 
 # Add User Table.
 def add_user(username, name, password, email):
-    connection = get_db_connection()
-    hashed_password = hash_password(password)
-    with connection:
-        connection.execute('INSERT INTO users (username, name, hashed_password, email) VALUES (?, ?, ?, ?)',
-                     (username, name, hashed_password, email))
-        connection.commit()
-    connection.close()
+    
+    try:
+        connection = get_db_connection()
+        hashed_password = hash_password(password)
+        with connection:
+            connection.execute('INSERT INTO users (username, name, hashed_password, email) VALUES (?, ?, ?, ?)',
+                        (username, name, hashed_password, email))
+    
+    except IntegrityError:
+        # Handle the case where the username already exists
+        print(f"Error: Username '{username}' already exists in the database.")
+    
+    except Exception as e:
+        # Handle other exceptions
+        print(f"An error occurred: {str(e)}")
+    
+    finally:
+        if connection:
+            connection.commit()
+            connection.close()
 
 
 # Authenticate user.
