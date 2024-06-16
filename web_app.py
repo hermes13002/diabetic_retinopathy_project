@@ -295,7 +295,7 @@ if uploaded_images is not None:
                     st.write(confidence_score)
                     
                     # Display predicted class and confidence score.
-                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score }.")
+                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f }.")
             
                 else: 
                
