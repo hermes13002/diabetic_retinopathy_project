@@ -284,7 +284,7 @@ if uploaded_images is not None:
                 # Define the binary class.
                 binary_class = ["DR", "NO-DR"]
             
-                if confidence_score >= 0.5:
+                if confidence_level >= 0.5:
                     
                     # Display predicted class and confidence score.
                     st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score * 100}.")
