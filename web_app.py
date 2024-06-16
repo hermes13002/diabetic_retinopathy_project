@@ -279,7 +279,7 @@ if uploaded_images is not None:
                  
                 score.append(confidence_level[0, 0])
                 # confidence_score = round(score[0], 4)
-                confidence_score = score * 100
+                confidence_score = score[0] * 100
                 
                 # Define the binary class.
                 binary_class = ["DR", "NO-DR"]
