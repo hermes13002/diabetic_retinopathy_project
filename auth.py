@@ -99,7 +99,7 @@ def add_dr_prediction(patient_id, prediction_class, confidence_score):
 def get_patient_data(username):
     connection = get_db_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT name, age, gender, contact FROM patient WHERE username = ?", (username,))
+    cursor.execute("SELECT name, age, gender, contact_info FROM patients WHERE username = ?", (username,))
     data = cursor.fetchone()
     connection.close()
     if data:
