@@ -279,7 +279,7 @@ if uploaded_images is not None:
                 # Perform prediction on the patient's image.
                 confidence_level = predict_image(model=model, image_path=image_path)
                 
-                st.write(f"{confidence_level[0][0]}")
+                st.write(f"{confidence_level}")
                 # # Define the binary class.
                 # binary_class = ["DR", "NO-DR"]
             
