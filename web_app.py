@@ -20,7 +20,7 @@ st.set_page_config(
     layout="wide",
 )
 
-
+st.write(st.get_option("theme.base"))
 # ==================== Styling ==================== #
 
 
