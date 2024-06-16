@@ -93,7 +93,21 @@ def add_dr_prediction(patient_id, prediction_class, confidence_score):
                      (patient_id, prediction_date, prediction_class, confidence_score))
         connection.commit()
     connection.close()
+   
+   
+
+# Function to get a patient's ID from the database.
+def get_patient_id(username):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT patient_id FROM patients WHERE username = ?", (username,))
+    data = cursor.fetchone()
+    connection.close()
     
+    return data[0]  # Return the patient_id
+   
+
+         
     
 # Function to get a patient's data from the database.
 def get_patient_data(username):
@@ -102,6 +116,7 @@ def get_patient_data(username):
     cursor.execute("SELECT name, age, gender, contact_info FROM patients WHERE username = ?", (username,))
     data = cursor.fetchone()
     connection.close()
+    
     if data:
         return {
             'name': data[0],
@@ -120,4 +135,7 @@ def fetch_predictions(username):
     cursor.execute("SELECT p.name, d.patient_id, d.prediction_class, d.confidence_score, d.prediction_date FROM patients AS p INNER JOIN DR_Prediction AS d ON p.patient_id = d.patient_id WHERE p.username = ?", (username,))
     data = cursor.fetchall()
     conn.close()
+    
     return data
+
+

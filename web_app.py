@@ -8,7 +8,7 @@ from tensorflow import keras
 import numpy as np
 from model import predict_image
 from tensorflow.keras.models import load_model
-from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patient_data, fetch_predictions
+from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patient_data, fetch_predictions, get_patient_id
 
 
 
@@ -376,13 +376,13 @@ if st.session_state.logged_in:
         st.subheader("Add Prediction Information")
         with st.expander("Click to fill the prediction info for future usage!"):
             
-            
+            patient_id = get_patient_id(login_username)
             prediction_class = st.selectbox("Prediction Class", ["DR", "No DR"])
             confidence_score = st.number_input("Confidence Score", min_value=1, max_value=100)
             add_prediction_button = st.button("Add Prediction")
             
             if add_prediction_button:
-                add_dr_prediction(prediction_class, confidence_score)
+                add_dr_prediction(patient_id, prediction_class, confidence_score)
                 st.success("Prediction added successfully!")
                 
                 
