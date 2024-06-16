@@ -269,9 +269,6 @@ if uploaded_images is not None:
                 image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
                 image.save(image_path)
                 
-                # The classes to be predicted.
-                classes = ["Presence of Diabetic Retinopathy [DR]", "Absence of Diabetic Retinopathy [NO-DR]"]
-                
                 # Load the model.
                 model = load_model("model-folder/diabetic-retino-model.h5")
 
@@ -279,34 +276,24 @@ if uploaded_images is not None:
             
                 # Perform prediction on the patient's image.
                 confidence_level = predict_image(model=model, image_path=image_path)
-                
-                
-                st.write(f"{confidence_level[0, 0]}")
                  
                 score.append(confidence_level[0, 0])
-                st.write(round(score[0], 4))
-                # # Define the binary class.
-                # binary_class = ["DR", "NO-DR"]
+                confidence_score = round(score[0], 4)
+                
+                
+                # Define the binary class.
+                binary_class = ["DR", "NO-DR"]
             
-                # if confidence_level >= 0.5:
+                if confidence_score >= 0.5:
                     
-                #     label = 1
-                #     # Display predicted class and confidence score.
-                #     st.write("This patient is likely to be", classes[label])
-                    
-                #     # confidence_level = np.round(confidence_level, 4)* 100
-                #     score = confidence_level
-                #     st.write(f"Model's Confidence Score: {score * 100}%")
+                    # Display predicted class and confidence score.
+                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score * 100}.")
             
-                # else: 
-                    
-                #     label = 0
-                #     # Display predicted class and confidence score.
-                #     st.write("This patient is likely to be", classes[label])
-                    
-                #     # confidence_level = (1 - np.round(confidence_level, 4) ) * 100
-                #     score = confidence_level
-                #     st.write(f"Model's Confidence Score: {round(score, 4) * 100}%")
+                else: 
+               
+                    # Display predicted class and confidence score.
+                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score * 100}.")
+        
                 
             
                 # # Display bar chart.
