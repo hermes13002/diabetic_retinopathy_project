@@ -98,13 +98,16 @@ def add_dr_prediction(patient_id, prediction_class, confidence_score):
 # Function to get a patient's data from the database.
 def get_patient_data(username):
     connection = get_db_connection()
-    connection.execute("SELECT name, age, gender, contact FROM patients WHERE username=?", (username,))
-    data = connection.fetchone()
+    cursor = connection.cursor()
+    cursor.execute("SELECT name, age, gender, contact FROM patient WHERE username = ?", (username,))
+    data = cursor.fetchone()
+    connection.close()
     if data:
         return {
-            "name": data[0],
-            "age": data[1],
-            "gender": data[2],
-            "contact": data[3]
+            'name': data[0],
+            'age': data[1],
+            'gender': data[2],
+            'contact': data[3]
         }
-    return None
+    else:
+        return None
