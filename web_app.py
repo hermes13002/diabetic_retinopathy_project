@@ -8,7 +8,7 @@ from tensorflow import keras
 import numpy as np
 from model import predict_image
 from tensorflow.keras.models import load_model
-from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patient_data, fetch_predictions, get_patient_id
+from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patient_data, fetch_predictions, get_patient_id, generate_pdf_report
 
 
 
@@ -404,6 +404,13 @@ if st.session_state.logged_in:
                     st.write(f"Prediction Class: {prediction[2]}")
                     st.write(f"Confidence Score: {prediction[3]}")
                     st.write(f"Prediction Date: {prediction[4]}")
+                    
+                    
+                # Generate and offer download link for PDF report
+                st.markdown("---")
+                st.subheader("Download Predictions Report")
+                pdf_filename = generate_pdf_report(predictions)
+                st.download_button(label="Download PDF Report", data=open(pdf_filename, "rb").read(), file_name=pdf_filename)
 
         
 

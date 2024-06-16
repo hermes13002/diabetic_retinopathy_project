@@ -7,3 +7,4 @@ Pillow
 streamlit
 streamlit-authenticator
 sqlalchemy
+reportlab

@@ -2,6 +2,9 @@ import sqlite3
 from sqlite3 import IntegrityError
 import hashlib
 from datetime import datetime
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+
  
 
 # Hash Password.
@@ -54,27 +57,27 @@ def init_db():
     connection.close()
 
 
-# Add User Table.
+# Function to add a user to the database
 def add_user(username, name, password, email):
-    
     try:
         connection = get_db_connection()
         hashed_password = hash_password(password)
+        
         with connection:
             connection.execute('INSERT INTO users (username, name, hashed_password, email) VALUES (?, ?, ?, ?)',
-                        (username, name, hashed_password, email))
-    
+                               (username, name, hashed_password, email))
+            connection.commit()  # Commit the transaction
+
     except IntegrityError:
         # Handle the case where the username already exists
         print(f"Error: Username '{username}' already exists in the database.")
-    
+
     except Exception as e:
         # Handle other exceptions
         print(f"An error occurred: {str(e)}")
-    
+
     finally:
         if connection:
-            connection.commit()
             connection.close()
 
 
@@ -159,3 +162,27 @@ def fetch_predictions(username):
         return None
 
 
+
+# Function to generate PDF report
+def generate_pdf_report(predictions):
+    pdf_filename = f"predictions_report_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.pdf"
+    c = canvas.Canvas(pdf_filename, pagesize=letter)
+    
+    # Set up PDF content
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(100, 750, "Predictions Overview")
+    c.setFont("Helvetica", 12)
+    y_position = 700
+    
+    # Write predictions to PDF
+    for prediction in predictions:
+        c.drawString(100, y_position, f"Name: {prediction[0]}")
+        c.drawString(100, y_position - 20, f"Patient ID: {prediction[1]}")
+        c.drawString(100, y_position - 40, f"Prediction Class: {prediction[2]}")
+        c.drawString(100, y_position - 60, f"Confidence Score: {prediction[3]}")
+        c.drawString(100, y_position - 80, f"Prediction Date: {prediction[4]}")
+        y_position -= 100
+    
+    # Save PDF file
+    c.save()
+    return pdf_filename
