@@ -4,4 +4,4 @@ matplotlib
 scikit-learn
 tensorflow==2.15.0
 Pillow
-streamlit 
+streamlit>=0.85.0
