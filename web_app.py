@@ -277,14 +277,20 @@ if uploaded_images is not None:
                 # Perform prediction on the patient's image.
                 confidence_level = predict_image(model=model, image_path=image_path)
                  
-                score.append(confidence_level[0, 0])
-                confidence_score = round(score[0], 4)
+                # score.append(confidence_level[0, 0])
+                # confidence_score = round(score[0], 4)
                 
-                st.write(confidence_score)
+                # st.write(confidence_score)
+                
                 # Define the binary class.
                 binary_class = ["DR", "NO-DR"]
             
                 if confidence_level >= 0.5:
+                    
+                    score.append(confidence_level[0, 0])
+                    confidence_score = round(score[0], 4)
+                
+                    st.write(confidence_score)
                     
                     # Display predicted class and confidence score.
                     st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score * 100}.")
