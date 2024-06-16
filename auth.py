@@ -1,4 +1,5 @@
 import sqlite3
+from sqlite3 import IntegrityError
 import hashlib
 from datetime import datetime
  
