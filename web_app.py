@@ -285,7 +285,7 @@ if uploaded_images is not None:
                 binary_class = ["DR", "NO-DR"]
 
                 # Predict Diabetic Retinopathy.
-                if st.button('Identify Diagnosis'):
+                if st.button(label='Identify Diagnosis', key="identify_diagnosis_button"):
                     
                     if confidence_level >= 0.5:
         
