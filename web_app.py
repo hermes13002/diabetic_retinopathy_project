@@ -304,7 +304,7 @@ if uploaded_images is not None:
                     
                 
                     # Display a bar chart with confidence scores.
-                    confidence_scores = [round((1 - confidence_score), 4), round(confidence_score, 4)]
+                    confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
                     st.write("Percentage Level of Confidence")
                     st.bar_chart(pd.DataFrame({
                         "Confidence Score": confidence_scores
