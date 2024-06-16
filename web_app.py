@@ -305,18 +305,15 @@ if uploaded_images is not None:
                 
                     # Display a bar chart with confidence scores.
                     confidence_scores = [round((1 - confidence_score), 4), round(confidence_score, 4)]
-                    st.title("Percentage Level of Confidence")
+                    st.write("Percentage Level of Confidence")
                     st.bar_chart(pd.DataFrame({
-                        "Model's Confidence Score": confidence_scores
+                        "Confidence Score": confidence_scores
                         }, index=binary_class))
                         
                         
                     # Delete the model path after making prediction.
                     os.remove(image_path)
             
-            
-        
-                
                 
             else:
                 st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
