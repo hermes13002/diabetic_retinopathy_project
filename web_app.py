@@ -8,7 +8,7 @@ from tensorflow import keras
 import numpy as np
 from model import predict_image
 from tensorflow.keras.models import load_model
-from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patients
+from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patient_data
 
 
 
@@ -22,7 +22,7 @@ st.set_page_config(
 )
 
 
-st.write(st.get_option("theme.base"))
+
 # ==================== Styling ==================== #
 
 
@@ -119,10 +119,10 @@ with st.container():
             """
             <div class="about-text">
                 <p>
-                This application automates the detection and grading of Diabetic Retinopathy (DR) using machine learning and computer vision. It analyzes retinal fundus images to provide 
-                accurate, consistent, and efficient identification of DR severity, supporting early intervention and personalized treatment. By leveraging these techniques, it addresses 
-                challenges posed by subjective assessments and manual labor in existing methods. The model, fine-tuned using Convolutional Neural Networks, achieves an impressive 96%
-                accuracy and recall score, ensuring effective detection of diabetic retinopathy cases amidst rising diabetes prevalence and ophthalmologist shortages.
+                This application automates the early-stage detection of diabetic retinopathy (DR) using machine learning and computer vision. It analyzes retinal fundus images to provide 
+                accurate, consistent, and efficient identification of DR, supporting early intervention and personalized treatment. By leveraging these techniques, it addresses challenges
+                posed by subjective assessments and manual labor in existing methods. The convolutional neural networks (CNN) model achieves an impressive accuracy and a 96% recall score, 
+                ensuring effective detection of diabetic retinopathy cases amidst rising diabetes prevalence and ophthalmologist shortages.
                 </p>            
             </div>
             """,
@@ -140,7 +140,7 @@ with st.container():
         <div class="get-started-section">
             <h3>Get Started</h3>
             <p>
-            Just upload your retinal fundus image, and the system will quickly analyze it to detect and grade the presence of Diabetic Retinopathy (DR) along with the percentage level of 
+            Just upload your retinal fundus image, and the system will quickly analyze it to detect the presence or absence of diabetic retinopathy (DR) along with the percentage level of 
             confidence.
             </p>
         </div>
@@ -172,11 +172,10 @@ with tab1:
             """
             <ul>
                 <li>Automate the detection of Diabetic Retinopathy (DR) using machine learning and computer vision.</li>
-                <li>Enhance accuracy in identifying different stages and severity levels of DR from retinal fundus images.</li>
                 <li>Support early intervention by providing timely and reliable screening results.</li>
                 <li>Reduce reliance on subjective assessments and manual labor for DR diagnosis.</li>
                 <li>Address challenges posed by the increasing prevalence of diabetes and the shortage of ophthalmologists.</li>
-                <li>Develop a robust and scalable system for DR detection and grading.</li>
+                <li>Develop a robust and scalable system for DR detection.</li>
                 <li>Enable personalized treatment plans based on precise DR severity assessments.</li>
             </ul>
             """,
@@ -190,10 +189,10 @@ with tab2:
         st.markdown(
             """
             <ul>
-                <li>Upload retinal fundus images for DR analysis.</li>
+                <li>Upload a single or batches of retinal fundus images for DR analysis.</li>
                 <li>Utilize machine learning and computer vision techniques for analysis.</li>
-                <li>Display accurate detection results and severity grading.</li>
-                <li>Provide confidence level in DR detection.</li>
+                <li>Display accurate detection results.</li>
+                <li>Provide confidence levels in the presence or absence of DR detection.</li>
             </ul>
             """,
             unsafe_allow_html=True,
@@ -207,7 +206,7 @@ st.markdown("&nbsp;")
 st.markdown("&nbsp;")
 
 
-st.write("Please Login or Sign up to use the App!")
+st.write("Please use the sidebar to Sign in or Sign up in order to use the app!")
 
 # Initialize the database
 init_db()
@@ -224,13 +223,13 @@ st.sidebar.title("User Authentication")
 
 
 # Tabs for login and signup
-tab1, tab2 = st.sidebar.tabs(["Login", "Sign Up"])
+tab1, tab2 = st.sidebar.tabs(["Sign in", "Sign Up"])
 
 with tab1:
-    st.subheader("Login")
+    st.subheader("Sign in")
     login_username = st.text_input("Username", key="login_username")
     login_password = st.text_input("Password", type="password", key="login_password")
-    login_button = st.button("Login")
+    login_button = st.button("Sign in")
     
     if login_button:
         user = authenticate_user(login_username, login_password)
@@ -239,7 +238,7 @@ with tab1:
             st.session_state.logged_in = True
             st.session_state.username = user[1]
         else:
-            st.error("Invalid username or password")
+            st.error("Invalid username or password!")
 
 with tab2:
     st.subheader("Sign Up")
@@ -258,7 +257,8 @@ with tab2:
 
 # Show a message if the user is logged in
 if st.session_state.logged_in:
-    st.write(f"Logged in as: {st.session_state.username}")
+    st.write(f"Signed in as: {st.session_state.username}")
+    st.markdown("&nbsp;")
       
         
     # ==================== Image Input Section ==================== #
@@ -308,7 +308,7 @@ if st.session_state.logged_in:
                         if confidence_level >= 0.5:
             
                             # Display predicted class and confidence score.
-                            st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
+                            st.success(f"The uploaded fundus image shows no signs of Diabetic Retinopathy. My confidence in this prediction is {confidence_score:.2f}%")
                             
                             # Display a bar chart with confidence scores.
                             confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
@@ -321,7 +321,7 @@ if st.session_state.logged_in:
                             
                             confidence_score = 100 - confidence_score
                             # Display predicted class and confidence score.
-                            st.success(f"The model predicts Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
+                            st.success(f"The uploaded fundus image indicates the presence of Diabetic Retinopathy. My confidence in this prediction is {confidence_score:.2f}%")
                             
                             # Display a bar chart with confidence scores.
                             confidence_scores = [round(confidence_score, 4), round((100 - confidence_score), 4)]
@@ -340,48 +340,51 @@ if st.session_state.logged_in:
 
     
     
-
-    # Tabs for different sections
-    patient_tab, prediction_tab = st.tabs(["Patients", "Predictions"])
+    patient_data = get_patient_data(login_username)
+    
+    # Tabs for different sections.
+    patient_tab, prediction_tab = st.columns(2)
     
     with patient_tab:
         
-        with st.expander("Click to fill patient's info"):
-            
-            st.subheader("Patient Information")
-            patient_name = st.text_input("Patient Name")
-            patient_age = st.number_input("Patient Age", min_value=0)
-            patient_gender = st.selectbox("Patient Gender", ["Male", "Female", "Other"])
-            patient_contact_info = st.text_input("Contact Info")
-            add_patient_button = st.button("Add Patient")
-            
-            if add_patient_button:
-                add_patient(patient_name, patient_age, patient_gender, patient_contact_info)
-                st.success("Patient added successfully!")
+        st.subheader("Patient's Information")
+        if not patient_data:
+            with st.expander("Click to fill patient's info"):
+                patient_name = st.text_input("Patient Name")
+                patient_age = st.number_input("Patient Age", min_value=0)
+                patient_gender = st.selectbox("Patient Gender", ["Male", "Female"])
+                patient_contact_info = st.text_input("Contact Info")
+                add_patient_button = st.button("Add Patient")
                 
-                
-                st.subheader("Existing Patients")
-                patients = get_patients()
-                if patients:
-                    for patient in patients:
-                        st.write(f"ID: {patient[0]}, Name: {patient[1]}, Age: {patient[2]}, Gender: {patient[3]}, Contact: {patient[4]}")
-                else:
-                    st.write("No patients found.")
+                if add_patient_button:
+                    add_patient(login_username, patient_name, patient_age, patient_gender, patient_contact_info)
+                    st.success("Patient added successfully!")
+                    patient_data = get_patient_data(login_username)  # Refresh patient data
+        
+        if patient_data:
+            # Display existing patient information
+            st.subheader("Patient's Information")
+            st.write(f"Name: {patient_data['name']}")
+            st.write(f"Age: {patient_data['age']}")
+            st.write(f"Gender: {patient_data['gender']}")
+            st.write(f"Contact: {patient_data['contact']}")
+        else:
+            st.write("No patient data found.")
                     
                     
-        with prediction_tab:
+    with prediction_tab:
+        
+        st.subheader("Add Prediction Information")
+        with st.expander("Click to fill the prediction info for future usage!"):
+        
+            patient_id = st.number_input("Patient ID", min_value=1)
+            prediction_class = st.selectbox("Prediction Class", ["DR", "No DR"])
+            confidence_score = st.number_input("Confidence Score", min_value=1, max_value=100)
+            add_prediction_button = st.button("Add Prediction")
             
-            with st.expander("Click to fill the prediction info for future usage!"):
-            
-                st.subheader("Add DR Prediction")
-                patient_id = st.number_input("Patient ID", min_value=1)
-                prediction_class = st.selectbox("Prediction Class", ["DR", "No DR"])
-                confidence_score = st.slider("Confidence Score", 0.0, 1.0)
-                add_prediction_button = st.button("Add Prediction")
-                
-                if add_prediction_button:
-                    add_dr_prediction(patient_id, prediction_class, confidence_score)
-                    st.success("Prediction added successfully!")
+            if add_prediction_button:
+                add_dr_prediction(patient_id, prediction_class, confidence_score)
+                st.success("Prediction added successfully!")
 
 
 
