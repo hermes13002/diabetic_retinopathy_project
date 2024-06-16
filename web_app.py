@@ -283,27 +283,31 @@ if uploaded_images is not None:
                 
                 # Define the binary class.
                 binary_class = ["DR", "NO-DR"]
-            
-                if confidence_level >= 0.5:
-    
-                    # Display predicted class and confidence score.
-                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
-            
-                else: 
-               
-                    # Display predicted class and confidence score.
-                    st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f}.")
+
+                # Predict Diabetic Retinopathy.
+                if st.button('Identify Diagnosis'):
+                    
+                    if confidence_level >= 0.5:
         
+                        # Display predicted class and confidence score.
+                        st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
                 
+                    else: 
+                        
+                        confidence_score = 100 - confidence_score
+                        # Display predicted class and confidence score.
+                        st.success(f"The model predicts Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
             
-                # # Display bar chart.
-                # confidence_scores = [np.round(1 - confidence_level, 4), np.round(confidence_level, 4)]
-                
-                # st.bar_chart(pd.DataFrame({
-                #     'Confidence': confidence_scores
-                #     }, index=binary_class))
                     
                 
+                    # Display a bar chart with confidence scores.
+                    confidence_scores = [round((1 - confidence_score), 4), round(confidence_score, 4)]
+                    st.title("Percentage Level of Confidence")
+                    st.bar_chart(pd.DataFrame({
+                        "Model's Confidence Score": confidence_scores
+                        }, index=binary_class))
+                        
+                    
                 # Delete the model path after making prediction.
                 os.remove(image_path)
         
