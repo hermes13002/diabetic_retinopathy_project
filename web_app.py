@@ -387,7 +387,7 @@ if st.session_state.logged_in:
                 
                 
         # Filter predictions by username
-        username_filter = st.text_input(login_username)
+        username_filter = login_username
         if username_filter:
             predictions = fetch_predictions(username_filter)
         

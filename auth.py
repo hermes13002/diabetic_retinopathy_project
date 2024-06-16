@@ -103,9 +103,11 @@ def get_patient_id(username):
     cursor.execute("SELECT patient_id FROM patients WHERE username = ?", (username,))
     data = cursor.fetchone()
     connection.close()
-    
-    return data[0]  # Return the patient_id
-   
+    if data:
+        return data[0]  # Return the patient_id
+    else:
+        return None
+
 
          
     
@@ -136,6 +138,10 @@ def fetch_predictions(username):
     data = cursor.fetchall()
     conn.close()
     
-    return data
+    if data:
+        return data
+    
+    else: 
+        return None
 
 
