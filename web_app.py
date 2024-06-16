@@ -251,44 +251,45 @@ with tab2:
 # File Uploader
 uploaded_images = st.file_uploader("Upload retinal fundus images for analysis", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
 
+# Load the model.
+model = load_model("model-folder/diabetic-retino-model.h5")
+
 # Display Uploaded Image and Classification Results
 if uploaded_images is not None:
     
-    # Loop through the uploaded images.
-    for uploaded_image in uploaded_images:
-        
-        if uploaded_image.type in ["image/jpg", "image/jpeg", "image/png"]:
+    # Predict Diabetic Retinopathy.
+    button_key = "identify_diagnosis_button"  # Unique key for the button
+                
+    if st.button(label='Identify Diagnosis', key=button_key):
     
-            # Display loading spinner
-            with st.spinner('Classifying...'):
-                
-                image = Image.open(uploaded_image)
-                st.image(image, caption="Uploaded Image")
+        # Loop through the uploaded images.
+        for uploaded_image in uploaded_images:
             
-                # Save the uploaded image to the working directory.
-                image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
-                image.save(image_path)
-                
-                # Load the model.
-                model = load_model("model-folder/diabetic-retino-model.h5")
-
-                score = []
-            
-                # Perform prediction on the patient's image.
-                confidence_level = predict_image(model=model, image_path=image_path)
-                 
-                score.append(confidence_level[0, 0])
-                # confidence_score = round(score[0], 4)
-                confidence_score = score[0] * 100
-                
-                # Define the binary class.
-                binary_class = ["DR", "NO-DR"]
-
-                # Predict Diabetic Retinopathy.
-                button_key = "identify_diagnosis_button"  # Unique key for the button
-                
-                if st.button(label='Identify Diagnosis', key=button_key):
+            if uploaded_image.type in ["image/jpg", "image/jpeg", "image/png"]:
+        
+                # Display loading spinner
+                with st.spinner('Classifying...'):
                     
+                    image = Image.open(uploaded_image)
+                    st.image(image, caption="Uploaded Image")
+                
+                    # Save the uploaded image to the working directory.
+                    image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
+                    image.save(image_path)
+
+                    score = []
+                
+                    # Perform prediction on the patient's image.
+                    confidence_level = predict_image(model=model, image_path=image_path)
+                    
+                    score.append(confidence_level[0, 0])
+                    # confidence_score = round(score[0], 4)
+                    confidence_score = score[0] * 100
+                    
+                    # Define the binary class.
+                    binary_class = ["DR", "NO-DR"]
+
+                        
                     if confidence_level >= 0.5:
         
                         # Display predicted class and confidence score.
@@ -309,16 +310,16 @@ if uploaded_images is not None:
                         "Model's Confidence Score": confidence_scores
                         }, index=binary_class))
                         
-                    
-                # Delete the model path after making prediction.
-                os.remove(image_path)
-        
-        
-       
+                        
+                    # Delete the model path after making prediction.
+                    os.remove(image_path)
             
             
-        else:
-            st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
+        
+                
+                
+            else:
+                st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
 
 
 st.markdown("&nbsp;", unsafe_allow_html=True)
