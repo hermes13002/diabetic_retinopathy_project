@@ -279,28 +279,29 @@ if uploaded_images is not None:
                 # Perform prediction on the patient's image.
                 confidence_level = predict_image(model=model, image_path=image_path)
                 
-                # Define the binary class.
-                binary_class = ["DR", "NO-DR"]
+                st.write(f"{confidence_level.dtype}")
+                # # Define the binary class.
+                # binary_class = ["DR", "NO-DR"]
             
-                if confidence_level >= 0.5:
+                # if confidence_level >= 0.5:
                     
-                    label = 1
-                    # Display predicted class and confidence score.
-                    st.write("This patient is likely to be", classes[label])
+                #     label = 1
+                #     # Display predicted class and confidence score.
+                #     st.write("This patient is likely to be", classes[label])
                     
-                    # confidence_level = np.round(confidence_level, 4)* 100
-                    score = confidence_level
-                    st.write(f"Model's Confidence Score: {score * 100}%")
+                #     # confidence_level = np.round(confidence_level, 4)* 100
+                #     score = confidence_level
+                #     st.write(f"Model's Confidence Score: {score * 100}%")
             
-                else: 
+                # else: 
                     
-                    label = 0
-                    # Display predicted class and confidence score.
-                    st.write("This patient is likely to be", classes[label])
+                #     label = 0
+                #     # Display predicted class and confidence score.
+                #     st.write("This patient is likely to be", classes[label])
                     
-                    # confidence_level = (1 - np.round(confidence_level, 4) ) * 100
-                    score = confidence_level
-                    st.write(f"Model's Confidence Score: {round(score, 4) * 100}%")
+                #     # confidence_level = (1 - np.round(confidence_level, 4) ) * 100
+                #     score = confidence_level
+                #     st.write(f"Model's Confidence Score: {round(score, 4) * 100}%")
                 
             
                 # # Display bar chart.
