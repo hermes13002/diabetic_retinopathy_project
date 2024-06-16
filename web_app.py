@@ -8,7 +8,7 @@ from tensorflow import keras
 import numpy as np
 from model import predict_image
 from tensorflow.keras.models import load_model
-from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patient_data
+from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patient_data, fetch_predictions
 
 
 
@@ -363,7 +363,6 @@ if st.session_state.logged_in:
         
         if patient_data:
             # Display existing patient information
-            st.subheader("Patient's Information")
             st.write(f"Name: {patient_data['name']}")
             st.write(f"Age: {patient_data['age']}")
             st.write(f"Gender: {patient_data['gender']}")
@@ -376,16 +375,37 @@ if st.session_state.logged_in:
         
         st.subheader("Add Prediction Information")
         with st.expander("Click to fill the prediction info for future usage!"):
-        
-            patient_id = st.number_input("Patient ID", min_value=1)
+            
+            
             prediction_class = st.selectbox("Prediction Class", ["DR", "No DR"])
             confidence_score = st.number_input("Confidence Score", min_value=1, max_value=100)
             add_prediction_button = st.button("Add Prediction")
             
             if add_prediction_button:
-                add_dr_prediction(patient_id, prediction_class, confidence_score)
+                add_dr_prediction(prediction_class, confidence_score)
                 st.success("Prediction added successfully!")
+                
+                
+        # Filter predictions by username
+        username_filter = st.text_input(login_username)
+        if username_filter:
+            predictions = fetch_predictions(username_filter)
+        
+        else:
+            predictions = []
 
+        
+        # Display predictions
+        if predictions:
+            st.subheader("Predictions Overview")
+            for prediction in predictions:
+                st.write(f"Name: {prediction[0]}")
+                st.write(f"Patient ID: {prediction[1]}")
+                st.write(f"Prediction Class: {prediction[2]}")
+                st.write(f"Confidence Score: {prediction[3]}")
+                st.write(f"Prediction Date: {prediction[4]}")
+
+        
 
 
 st.markdown("&nbsp;", unsafe_allow_html=True)

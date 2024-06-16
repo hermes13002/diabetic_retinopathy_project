@@ -111,3 +111,13 @@ def get_patient_data(username):
         }
     else:
         return None
+
+
+# Function to query and fetch data from the database, filtered by username
+def fetch_predictions(username):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT p.name, d.patient_id, d.prediction_class, d.confidence_score, d.prediction_date FROM patients AS p INNER JOIN DR_Prediction AS d ON p.patient_id = d.patient_id WHERE p.username = ?", (username,))
+    data = cursor.fetchall()
+    conn.close()
+    return data
