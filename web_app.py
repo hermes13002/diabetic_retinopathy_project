@@ -18,6 +18,7 @@ st.set_page_config(
     page_title="SA App",
     page_icon=":bar_chart:",
     layout="wide",
+    theme="light"
 )
 
 st.write(st.get_option("theme.base"))
