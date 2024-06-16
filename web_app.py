@@ -12,14 +12,16 @@ from tensorflow.keras.models import load_model
 
 
 
-# ==================== Configure Streamlit page ==================== #
+# ==================== Set the page configuration ====================#
 
 st.set_page_config(
-    page_title="SA App",
-    page_icon=":bar_chart:",
+    page_title="Diabetic Retinopathy Detection",
+    page_icon=":eye:",
     layout="wide",
-    theme="light"
+    initial_sidebar_state="expanded",
+    theme="light"  # Set the theme to "light"
 )
+
 
 st.write(st.get_option("theme.base"))
 # ==================== Styling ==================== #
