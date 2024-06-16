@@ -274,12 +274,17 @@ if uploaded_images is not None:
                 
                 # Load the model.
                 model = load_model("model-folder/diabetic-retino-model.h5")
-            
+
+                score = []
             
                 # Perform prediction on the patient's image.
                 confidence_level = predict_image(model=model, image_path=image_path)
                 
+                
                 st.write(f"{confidence_level[0, 0]}")
+                 
+                score.append(confidence_level[0, 0])
+                st.write(round(score[0], 4))
                 # # Define the binary class.
                 # binary_class = ["DR", "NO-DR"]
             
