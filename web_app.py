@@ -283,13 +283,12 @@ if uploaded_images is not None:
                     confidence_level = predict_image(model=model, image_path=image_path)
                     
                     score.append(confidence_level[0, 0])
-                    # confidence_score = round(score[0], 4)
                     confidence_score = score[0] * 100
                     
                     # Define the binary class.
                     binary_class = ["DR", "NO-DR"]
 
-                    st.write(confidence_score)
+                    
                     if confidence_level >= 0.5:
         
                         # Display predicted class and confidence score.
@@ -309,7 +308,7 @@ if uploaded_images is not None:
                         st.success(f"The model predicts Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
                         
                         # Display a bar chart with confidence scores.
-                        confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
+                        confidence_scores = [round(confidence_score, 4), round((100 - confidence_score), 4)]
                         st.write("Percentage Level of Confidence")
                         st.bar_chart(pd.DataFrame({
                             "Confidence Score": confidence_scores
