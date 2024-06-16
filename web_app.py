@@ -18,8 +18,7 @@ st.set_page_config(
     page_title="Diabetic Retinopathy Detection",
     page_icon=":eye:",
     layout="wide",
-    initial_sidebar_state="expanded",
-    theme="light"  # Set the theme to "light"
+    # initial_sidebar_state="expanded",
 )
 
 
