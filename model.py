@@ -37,5 +37,5 @@ def predict_image(model, image_path):
     # Predict the class probabilities
     probability_prediction = model.predict( image_tensor)
 
-    return probability_prediction
+    return np.round(probability_prediction, decimals=4)
 
