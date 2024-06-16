@@ -8,7 +8,7 @@ from tensorflow import keras
 import numpy as np
 from model import predict_image
 from tensorflow.keras.models import load_model
-
+from auth import hash_password, get_db_connection, init_db, add_user, authenticate_user, add_patient, add_dr_prediction, get_patients
 
 
 
@@ -40,12 +40,6 @@ st.markdown(
         
         .title-text h1{
             font-size: 3rem; /* Larger font size for the header */
-        }
-        
-        .stApp {
-            background-color: #FFFFFF; 
-            padding: 10px;
-            margin: 15px
         }
         
         .footer{
@@ -158,6 +152,7 @@ with st.container():
 
 
 # ==================== Spacing ==================== #
+
 st.markdown("&nbsp;")
 st.markdown("&nbsp;")
 
@@ -165,8 +160,6 @@ st.markdown("&nbsp;")
 
 
 # ==================== Create Tabs ==================== #
-
-# tab1, tab2 = st.tabs(["🎯 Objectives", "🎯 App Features"])
 
 # Define tabs with emojis
 tab1, tab2 = st.columns(2)
@@ -209,120 +202,187 @@ with tab2:
 
 
 
+# ==================== Spacing ==================== #
+st.markdown("&nbsp;")
+st.markdown("&nbsp;")
 
 
+st.write("Please Login or Sign up to use the App!")
+
+# Initialize the database
+init_db()
 
 
+# Initialize session state variables
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
+if 'username' not in st.session_state:
+    st.session_state.username = ""
+
+# Sidebar for user authentication
+st.sidebar.title("User Authentication")
 
 
+# Tabs for login and signup
+tab1, tab2 = st.sidebar.tabs(["Login", "Sign Up"])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# ==================== Image Input Section ==================== #
-
-
-# File Uploader
-uploaded_images = st.file_uploader("Upload retinal fundus images for analysis", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
-
-# Load the model.
-model = load_model("model-folder/diabetic-retino-model.h5")
-
-# Display Uploaded Image and Classification Results
-if uploaded_images is not None:
+with tab1:
+    st.subheader("Login")
+    login_username = st.text_input("Username", key="login_username")
+    login_password = st.text_input("Password", type="password", key="login_password")
+    login_button = st.button("Login")
     
-    # Predict Diabetic Retinopathy.
-    button_key = "identify_diagnosis_button"  # Unique key for the button
-                
-    if st.button(label='Identify Diagnosis', key=button_key):
+    if login_button:
+        user = authenticate_user(login_username, login_password)
+        if user:
+            st.success(f"Welcome, {user[2]}!")
+            st.session_state.logged_in = True
+            st.session_state.username = user[1]
+        else:
+            st.error("Invalid username or password")
+
+with tab2:
+    st.subheader("Sign Up")
+    signup_name = st.text_input("Full Name", key="signup_name")
+    signup_username = st.text_input("Username", key="signup_signup_username")
+    signup_password = st.text_input("Password", type="password", key="signup_signup_password")
+    signup_email = st.text_input("Email", key="signup_email")
+    signup_button = st.button("Sign Up")
     
-        # Loop through the uploaded images.
-        for uploaded_image in uploaded_images:
-            
-            if uploaded_image.type in ["image/jpg", "image/jpeg", "image/png"]:
-        
-                # Display loading spinner
-                with st.spinner('Classifying...'):
-                    
-                    image = Image.open(uploaded_image)
-                    st.image(image, caption="Uploaded Image")
-                
-                    # Save the uploaded image to the working directory.
-                    image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
-                    image.save(image_path)
+    if signup_button:
+        add_user(signup_username, signup_name, signup_password, signup_email)
+        st.success("User registered successfully! Please login.")
 
-                    score = []
-                
-                    # Perform prediction on the patient's image.
-                    confidence_level = predict_image(model=model, image_path=image_path)
-                    
-                    score.append(confidence_level[0, 0])
-                    confidence_score = score[0] * 100
-                    
-                    # Define the binary class.
-                    binary_class = ["DR", "NO-DR"]
 
-                    
-                    if confidence_level >= 0.5:
+
+
+# Show a message if the user is logged in
+if st.session_state.logged_in:
+    st.write(f"Logged in as: {st.session_state.username}")
+      
         
-                        # Display predicted class and confidence score.
-                        st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
-                        
-                        # Display a bar chart with confidence scores.
-                        confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
-                        st.write("Percentage Level of Confidence")
-                        st.bar_chart(pd.DataFrame({
-                            "Confidence Score": confidence_scores
-                            }, index=binary_class))
+    # ==================== Image Input Section ==================== #
+
+
+    # File Uploader
+    uploaded_images = st.file_uploader("Upload retinal fundus images for analysis", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+
+    # Load the model.
+    model = load_model("model-folder/diabetic-retino-model.h5")
+
+    # Display Uploaded Image and Classification Results
+    if uploaded_images is not None:
+        
+        # Predict Diabetic Retinopathy.
+        button_key = "identify_diagnosis_button"  # Unique key for the button
                     
-                    else: 
-                        
-                        confidence_score = 100 - confidence_score
-                        # Display predicted class and confidence score.
-                        st.success(f"The model predicts Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
-                        
-                        # Display a bar chart with confidence scores.
-                        confidence_scores = [round(confidence_score, 4), round((100 - confidence_score), 4)]
-                        st.write("Percentage Level of Confidence")
-                        st.bar_chart(pd.DataFrame({
-                            "Confidence Score": confidence_scores
-                            }, index=binary_class))
-                        
-                        
-                    # Delete the model path after making prediction.
-                    os.remove(image_path)
-            
+        if st.button(label='Identify Diagnosis', key=button_key):
+        
+            # Loop through the uploaded images.
+            for uploaded_image in uploaded_images:
                 
-            else:
-                st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
+                if uploaded_image.type in ["image/jpg", "image/jpeg", "image/png"]:
+            
+                    # Display loading spinner
+                    with st.spinner('Classifying...'):
+                        
+                        image = Image.open(uploaded_image)
+                        st.image(image, caption="Uploaded Image")
+                    
+                        # Save the uploaded image to the working directory.
+                        image_path = os.path.join("diabetic_retinopathy_dataset", "uploaded_image.jpg")
+                        image.save(image_path)
+
+                        score = []
+                    
+                        # Perform prediction on the patient's image.
+                        confidence_level = predict_image(model=model, image_path=image_path)
+                        
+                        score.append(confidence_level[0, 0])
+                        confidence_score = score[0] * 100
+                        
+                        # Define the binary class.
+                        binary_class = ["DR", "NO-DR"]
+
+                        
+                        if confidence_level >= 0.5:
+            
+                            # Display predicted class and confidence score.
+                            st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
+                            
+                            # Display a bar chart with confidence scores.
+                            confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
+                            st.write("Percentage Level of Confidence")
+                            st.bar_chart(pd.DataFrame({
+                                "Confidence Score": confidence_scores
+                                }, index=binary_class))
+                        
+                        else: 
+                            
+                            confidence_score = 100 - confidence_score
+                            # Display predicted class and confidence score.
+                            st.success(f"The model predicts Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
+                            
+                            # Display a bar chart with confidence scores.
+                            confidence_scores = [round(confidence_score, 4), round((100 - confidence_score), 4)]
+                            st.write("Percentage Level of Confidence")
+                            st.bar_chart(pd.DataFrame({
+                                "Confidence Score": confidence_scores
+                                }, index=binary_class))
+                            
+                            
+                        # Delete the model path after making prediction.
+                        os.remove(image_path)
+                
+                    
+                else:
+                    st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
+
+    
+    
+
+    # Tabs for different sections
+    patient_tab, prediction_tab = st.tabs(["Patients", "Predictions"])
+    
+    with patient_tab:
+        
+        with st.expander("Click to fill patient's info"):
+            
+            st.subheader("Patient Information")
+            patient_name = st.text_input("Patient Name")
+            patient_age = st.number_input("Patient Age", min_value=0)
+            patient_gender = st.selectbox("Patient Gender", ["Male", "Female", "Other"])
+            patient_contact_info = st.text_input("Contact Info")
+            add_patient_button = st.button("Add Patient")
+            
+            if add_patient_button:
+                add_patient(patient_name, patient_age, patient_gender, patient_contact_info)
+                st.success("Patient added successfully!")
+                
+                
+                st.subheader("Existing Patients")
+                patients = get_patients()
+                if patients:
+                    for patient in patients:
+                        st.write(f"ID: {patient[0]}, Name: {patient[1]}, Age: {patient[2]}, Gender: {patient[3]}, Contact: {patient[4]}")
+                else:
+                    st.write("No patients found.")
+                    
+                    
+        with prediction_tab:
+            
+            with st.expander("Click to fill the prediction info for future usage!"):
+            
+                st.subheader("Add DR Prediction")
+                patient_id = st.number_input("Patient ID", min_value=1)
+                prediction_class = st.selectbox("Prediction Class", ["DR", "No DR"])
+                confidence_score = st.slider("Confidence Score", 0.0, 1.0)
+                add_prediction_button = st.button("Add Prediction")
+                
+                if add_prediction_button:
+                    add_dr_prediction(patient_id, prediction_class, confidence_score)
+                    st.success("Prediction added successfully!")
+
 
 
 st.markdown("&nbsp;", unsafe_allow_html=True)
@@ -343,6 +403,49 @@ st.markdown(
     """, 
     unsafe_allow_html=True
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -390,45 +493,7 @@ st.markdown(
 )
 
 
-# # Define the sidebar content using Streamlit's layout components.
-# st.sidebar.markdown(
-#     """
-#     <div class="info">
-#         <h1 class="h1">About</h1>
-#         <p>
-#         This web application automates the detection and grading of Diabetic Retinopathy (DR) using machine learning and computer vision. By analyzing retinal fundus images, it aims to provide
-#         accurate, consistent, and efficient identification of DR severity, supporting early intervention and personalized treatment. This addresses the rising diabetes prevalence and 
-#         ophthalmologist shortage, enhancing timely and reliable screening and diagnosis.
-#         </p>
-#         <h2 class="header">Purpose</h2>
-#         <p>
-#         The purpose of this project is to demonstrate the capabilities of machine learning in image classification and to provide a practical example of how machine learning can be applied 
-#         to real-world problems.
-#         </p>
-#         <h2 class="header">Contributors</h2>
-#         <p>
-#         <a href="https://github.com/TolaniSilas" target="_blank">Osunba Silas Tolani</a>
-#         </p>
-#         <p>
-#         <a href="https://github.com/TolaniSilas" target="_blank">Soares Ayoigbala</a>
-#         </p>
-#         <p>
-#         <a href="https://github.com/TolaniSilas" target="_blank">Ogundipe Elijah</a>
-#         </p>        
-#         <h2 class="header">Acknowledgments</h2>
-#         <p>I'd like to thank the Streamlit community for their support and the developers of the underlying libraries used in this project.</p>
-#     </div>
-#     """,
-#     unsafe_allow_html=True
-# )
 
-
-
-# st.sidebar.markdown("""
-#     <div class="feedback">
-#         <h1 class="header">Feedback</h1>
-#     </div>
-# """, unsafe_allow_html=True)
 
 # feedback = st.sidebar.text_area("Please share your feedback here:", max_chars=500)
 
