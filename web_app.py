@@ -289,7 +289,7 @@ if uploaded_images is not None:
                     # Define the binary class.
                     binary_class = ["DR", "NO-DR"]
 
-                        
+                    st.write(confidence_score)
                     if confidence_level >= 0.5:
         
                         # Display predicted class and confidence score.
