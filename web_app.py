@@ -294,21 +294,26 @@ if uploaded_images is not None:
         
                         # Display predicted class and confidence score.
                         st.success(f"The model predicts No Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
-                
+                        
+                        # Display a bar chart with confidence scores.
+                        confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
+                        st.write("Percentage Level of Confidence")
+                        st.bar_chart(pd.DataFrame({
+                            "Confidence Score": confidence_scores
+                            }, index=binary_class))
+                    
                     else: 
                         
                         confidence_score = 100 - confidence_score
                         # Display predicted class and confidence score.
                         st.success(f"The model predicts Diabetic Retinopathy with a confidence score of {confidence_score:.2f}%")
-            
-                    
-                
-                    # Display a bar chart with confidence scores.
-                    confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
-                    st.write("Percentage Level of Confidence")
-                    st.bar_chart(pd.DataFrame({
-                        "Confidence Score": confidence_scores
-                        }, index=binary_class))
+                        
+                        # Display a bar chart with confidence scores.
+                        confidence_scores = [round((100 - confidence_score), 4), round(confidence_score, 4)]
+                        st.write("Percentage Level of Confidence")
+                        st.bar_chart(pd.DataFrame({
+                            "Confidence Score": confidence_scores
+                            }, index=binary_class))
                         
                         
                     # Delete the model path after making prediction.
