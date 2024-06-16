@@ -386,24 +386,24 @@ if st.session_state.logged_in:
                 st.success("Prediction added successfully!")
                 
                 
-        # Filter predictions by username
-        username_filter = login_username
-        if username_filter:
-            predictions = fetch_predictions(username_filter)
-        
-        else:
-            predictions = []
+            # Filter predictions by username
+            username_filter = login_username
+            if username_filter:
+                predictions = fetch_predictions(username_filter)
+            
+            else:
+                predictions = []
 
-        
-        # Display predictions
-        if predictions:
-            st.subheader("Predictions Overview")
-            for prediction in predictions:
-                st.write(f"Name: {prediction[0]}")
-                st.write(f"Patient ID: {prediction[1]}")
-                st.write(f"Prediction Class: {prediction[2]}")
-                st.write(f"Confidence Score: {prediction[3]}")
-                st.write(f"Prediction Date: {prediction[4]}")
+            
+            # Display predictions
+            if predictions:
+                st.subheader("Predictions Overview")
+                for prediction in predictions:
+                    st.write(f"Name: {prediction[0]}")
+                    st.write(f"Patient ID: {prediction[1]}")
+                    st.write(f"Prediction Class: {prediction[2]}")
+                    st.write(f"Confidence Score: {prediction[3]}")
+                    st.write(f"Prediction Date: {prediction[4]}")
 
         
 
