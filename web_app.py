@@ -339,6 +339,8 @@ if st.session_state.logged_in:
                     st.error("Please upload a JPG or JPEG or PNG image.", icon="🔴")
 
     
+    st.markdown("---")
+
     
     patient_data = get_patient_data(login_username)
     
@@ -398,12 +400,15 @@ if st.session_state.logged_in:
             # Display predictions
             if predictions:
                 st.subheader("Predictions Overview")
-                for prediction in predictions:
+                for prediction in predictions[0]:
                     st.write(f"Name: {prediction[0]}")
                     st.write(f"Patient ID: {prediction[1]}")
                     st.write(f"Prediction Class: {prediction[2]}")
                     st.write(f"Confidence Score: {prediction[3]}")
                     st.write(f"Prediction Date: {prediction[4]}")
+                    
+                    st.write("")
+                    st.write("To get your full predictions overview, click to download the PDF report.")
                     
                     
                 # Generate and offer download link for PDF report
