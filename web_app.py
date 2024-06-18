@@ -250,7 +250,7 @@ with tab2:
     
     if signup_button:
         add_user(signup_username, signup_name, signup_password, signup_email)
-        st.success("User registered successfully! Please login.")
+        st.success("User registered successfully! Please Sign in.")
 
 
 
@@ -407,8 +407,8 @@ if st.session_state.logged_in:
                     st.write(f"Confidence Score: {prediction[3]}")
                     st.write(f"Prediction Date: {prediction[4]}")
                     
-                    st.write("")
-                    st.write("To get your full predictions overview, click to download the PDF report.")
+                st.write("")
+                st.write("To get your full predictions overview, click to download the PDF report.")
                     
                     
                 # Generate and offer download link for PDF report
