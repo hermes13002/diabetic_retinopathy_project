@@ -400,7 +400,7 @@ if st.session_state.logged_in:
             # Display predictions
             if predictions:
                 st.subheader("Predictions Overview")
-                for prediction in predictions[0]:
+                for prediction in predictions:
                     st.write(f"Name: {prediction[0]}")
                     st.write(f"Patient ID: {prediction[1]}")
                     st.write(f"Prediction Class: {prediction[2]}")
