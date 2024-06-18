@@ -140,7 +140,9 @@ https://drive.google.com/file/d/1ap_UEfRk3AvkDRjapM_oEmgu2fCePI_9/view?usp=shari
 
 3.	You will be navigated to the "Select Classiier Screen"
     - Choose the "Single Image Classifier" button to classify a single image.
-    - OR
+    
+    OR
+    
     - Choose the "Multiple Image Classifier" button to classify a multiple images at once.
 
 4. Upload a Retinal Image
