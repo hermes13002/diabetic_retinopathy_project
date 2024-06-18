@@ -76,6 +76,8 @@ This application automates the early-stage detection of diabetic retinopathy (DR
 
         5. Start the Streamlit application:
             streamlit run web_app.py
+            
+        The web app is live at https://diabetic-retinopathy-web.streamlit.app
 
 
 
