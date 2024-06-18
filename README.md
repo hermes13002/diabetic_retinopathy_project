@@ -128,7 +128,7 @@ This application automates the early-stage detection of diabetic retinopathy (DR
 
 ## Usage
 
-Click the link below to download mobile app;
+Click the link below to download mobile app:
 
 https://drive.google.com/file/d/1ap_UEfRk3AvkDRjapM_oEmgu2fCePI_9/view?usp=sharing
 
