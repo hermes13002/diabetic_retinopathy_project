@@ -124,7 +124,7 @@ Contributions are welcome! If you would like to contribute to the project, feel 
 
 For any feedback regarding this **Automated Detection of Diabetic Retinopathy**, please contact us at:
 
-- tolanisilas3606@gmail.com"
+- tolanisilas3606@gmail.com
 
 
 
